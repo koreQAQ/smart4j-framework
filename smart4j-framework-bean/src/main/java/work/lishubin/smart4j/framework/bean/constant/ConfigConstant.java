@@ -16,5 +16,8 @@ public interface ConfigConstant {
     String SMART_FRAMEWORK_JDBC_USERNAME="smart.framework.jdbc.username";
     String SMART_FRAMEWORK_JDBC_PASSWORD="smart.framework.jdbc.password";
 
+
+    String SMART_FRAMEWORK_BASE_PACKAGE="smart.framework.base.package";
     //todo Web constant
+
 }
