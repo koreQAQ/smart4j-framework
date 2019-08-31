@@ -6,60 +6,51 @@ import work.lishubin.smart4j.framework.bean.annotation.Controller;
 import work.lishubin.smart4j.framework.bean.annotation.Service;
 import work.lishubin.smart4j.framework.bean.constant.ConfigConstant;
 import work.lishubin.smart4j.framework.utils.ClassUtils;
+import work.lishubin.smart4j.framework.utils.ReflectionUtils;
 
 import java.lang.annotation.Annotation;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
- * Bean 容器
+ * Bean 容器 , 使class与bean实例一一对应
  * @author 李树彬
  * @date 2019/8/30  11:53
  */
 public class BeanHelper {
 
+    /**
+     * 维护Class与instance之间的映射关系
+     */
+    private static Map<Class<?>, Object> BEAN_MAP = new HashMap<>();
 
-    private static final Set<Class<?>> CLASS_SET = new HashSet<>();
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(BeanHelper.class);
-
-    // 加载项目基础包下所有的类到classSet中统一管理
     static {
+        // 建立起映射关系
+        Set<Class<?>> beanClassSet = ClassHelper.getClassSet();
+        for (Class<?> cls : beanClassSet) {
 
-        Set<Class<?>> allClassSetByPackage = ClassUtils.getAllClassSetByPackage(ConfigConstant.SMART_FRAMEWORK_BASE_PACKAGE);
-        CLASS_SET.addAll(allClassSetByPackage);
+            Object instance = ReflectionUtils.getNewInstance(cls);
+            BEAN_MAP.put(cls, instance);
 
+        }
     }
 
-    public static Set<Class<?>> getClassSet(){
-        return CLASS_SET;
+    public static Map<Class<?>, Object> getBeanMap() {
+        return BEAN_MAP;
     }
 
-    public static Set<Class<?>> getServiceClass(){
-        return getClassSetWithAnnotation(Service.class);
-    }
+    public static <T> T getBean(Class<?> cls){
+        T instance = null;
+        if (!BEAN_MAP.isEmpty() && BEAN_MAP.containsKey(cls)){
 
-    public static Set<Class<?>> getControllerClass(){
-        return getClassSetWithAnnotation(Controller.class);
-    }
+            Object o = BEAN_MAP.get(cls);
+            if (o != null){
 
-    private static Set<Class<?>> getClassSetWithAnnotation(Class<? extends Annotation> annotation){
-
-        Set<Class<?>> serviceClassSet = new HashSet<>();
-
-        for (Class<?> cls : getClassSet()) {
-
-            // 查找含有对应注解的类，并放入Set集合
-            if (cls.isAnnotationPresent(annotation)) {
-                serviceClassSet.add(cls);
+                instance = (T) o;
             }
         }
-        return serviceClassSet;
+        return instance;
     }
-
-
-
-
-
-
 }
