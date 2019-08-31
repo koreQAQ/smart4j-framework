@@ -103,8 +103,9 @@ public class ClassUtils {
     }
 
     private static void doAddClass(Set<Class<?>> classSet, String className) {
-        String testClassTail = "Test";
         //去除测试类
+        String testClassTail = "Test";
+
 
         if (!(className.endsWith(testClassTail))){
             Class<?> loadClass = loadClass(className, false);

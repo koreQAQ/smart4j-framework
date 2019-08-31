@@ -18,6 +18,14 @@
             <artifactId>smart4j-framework-utils</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
+
+        <!--test-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 </project>

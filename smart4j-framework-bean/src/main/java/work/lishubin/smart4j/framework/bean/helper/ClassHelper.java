@@ -6,9 +6,11 @@ import work.lishubin.smart4j.framework.bean.annotation.Controller;
 import work.lishubin.smart4j.framework.bean.annotation.Service;
 import work.lishubin.smart4j.framework.bean.constant.ConfigConstant;
 import work.lishubin.smart4j.framework.utils.ClassUtils;
+import work.lishubin.smart4j.framework.utils.PropUtils;
 
 import java.lang.annotation.Annotation;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 
 /**
@@ -26,7 +28,12 @@ public class ClassHelper {
     // 加载项目基础包下所有的类到classSet中统一管理
     static {
 
-        Set<Class<?>> allClassSetByPackage = ClassUtils.getAllClassSetByPackage(ConfigConstant.SMART_FRAMEWORK_BASE_PACKAGE);
+        Set<Class<?>> allClassSetByPackage = ClassUtils.getAllClassSetByPackage(
+            PropUtils.getStringValue(
+                ConfigHelper.getConfigProp(),
+                ConfigConstant.SMART_FRAMEWORK_BASE_PACKAGE
+            )
+        );
         CLASS_SET.addAll(allClassSetByPackage);
 
     }

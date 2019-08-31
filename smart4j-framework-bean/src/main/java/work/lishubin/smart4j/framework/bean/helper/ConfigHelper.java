@@ -34,5 +34,11 @@ public class ConfigHelper {
     }
 
 
+    public static Properties getConfigProp() {
+        return CONFIG_PROP;
+    }
 
+    public static void setConfigProp(Properties configProp) {
+        CONFIG_PROP = configProp;
+    }
 }

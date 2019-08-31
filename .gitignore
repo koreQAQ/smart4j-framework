@@ -1,27 +1,7 @@
-# Compiled class file
-*.class
-
-# Log file
-*.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-.idea
-*/target
-.iml
-
+smart4j-framework-aop/
+smart4j-framework-bean/src/main/resources/
+smart4j-framework-bean/src/test/
+smart4j-framework-bean/target/
+smart4j-framework-dependencies/src/
+smart4j-framework-utils/src/main/resources/
+smart4j-framework-utils/target/
