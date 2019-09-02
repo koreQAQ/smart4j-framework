@@ -16,4 +16,10 @@ public class StringUtils {
         return !isNotEmpty(checkString);
     }
 
+
+    public static String[] spiltString(String source,String flag){
+        return source.split(flag);
+
+    }
+
 }

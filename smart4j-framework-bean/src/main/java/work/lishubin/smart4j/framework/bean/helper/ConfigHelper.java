@@ -1,6 +1,7 @@
 package work.lishubin.smart4j.framework.bean.helper;
 
 import work.lishubin.smart4j.framework.bean.constant.ConfigConstant;
+import work.lishubin.smart4j.framework.utils.CodecUtils;
 import work.lishubin.smart4j.framework.utils.PropUtils;
 
 import java.util.Properties;
@@ -14,27 +15,37 @@ public class ConfigHelper {
     private static Properties CONFIG_PROP = PropUtils.getProperties(ConfigConstant.CONFIG_FILE);
 
     public static String getJdbcDriver(){
-        //todo
-        return null;
+        return PropUtils.getStringValue(CONFIG_PROP,ConfigConstant.SMART_FRAMEWORK_JDBC_DRIVER);
     }
 
     public static String getJdbcUrl(){
-        //todo
-        return null;
+        return PropUtils.getStringValue(CONFIG_PROP,ConfigConstant.SMART_FRAMEWORK_JDBC_URL);
     }
 
     public static String getJdbcUsername(){
-        //todo
-        return null;
+        return PropUtils.getStringValue(CONFIG_PROP,ConfigConstant.SMART_FRAMEWORK_JDBC_USERNAME);
     }
+
 
     public static String getJdbcPassword(){
-        //todo
-        return null;
+        return PropUtils.getStringValue(CONFIG_PROP,ConfigConstant.SMART_FRAMEWORK_JDBC_PASSWORD);
     }
 
 
-    public static Properties getConfigProp() {
+    public static String getAppJspPath(){
+        return PropUtils.getStringValueWithDefault(
+                CONFIG_PROP,
+                ConfigConstant.SMART_FRAMEWORK_APP_JSP_PATH,
+                ConfigConstant.SMART_FRAMEWORK_APP_JSP_PATH_DEFAULT_VALUE);
+    }
+    public static String getAppAssetsPath(){
+        return PropUtils.getStringValueWithDefault(
+                CONFIG_PROP,
+                ConfigConstant.SMART_FRAMEWORK_APP_ASSETS_PATH,
+                ConfigConstant.SMART_FRAMEWORK_APP_ASSETS_PATH_DEFAULT_VALUE);
+    }
+
+    private static Properties getConfigProp() {
         return CONFIG_PROP;
     }
 

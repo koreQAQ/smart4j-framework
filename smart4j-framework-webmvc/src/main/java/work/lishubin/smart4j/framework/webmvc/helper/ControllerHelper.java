@@ -38,7 +38,7 @@ public class ControllerHelper {
                 // 如果方法上存在Action注解
                 if (declaredMethod.isAnnotationPresent(Action.class)){
 
-                    
+
                     // 解析Action注解内容 获取method 和 url
                     Action actionAnnotation = declaredMethod.getAnnotation(Action.class);
                     String methodWithUrl = actionAnnotation.value();
@@ -66,10 +66,21 @@ public class ControllerHelper {
     }
 
 
+    public static SmartHandler getSmartHandler(String requestMethod,String requestUrl){
+        SmartRequest smartRequest = SmartRequest.getNewInstance();
+        smartRequest.setRequestMethod(requestMethod);
+        smartRequest.setRequestUrl(requestUrl);
+        return getSmartHandler(smartRequest);
+    }
 
+    private static SmartHandler getSmartHandler(SmartRequest smartRequest){
 
+        SmartHandler smartHandler = null;
 
+        if (ACTION_MAP.containsKey(smartRequest)){
+            smartHandler = ACTION_MAP.get(smartRequest);
+        }
+        return smartHandler;
 
-
-
+    }
 }

@@ -18,6 +18,15 @@ public interface ConfigConstant {
 
 
     String SMART_FRAMEWORK_BASE_PACKAGE="smart.framework.base.package";
-    //todo Web constant
+
+    String SMART_FRAMEWORK_APP_JSP_PATH = "smart.framework.app.jsp.path";
+    String SMART_FRAMEWORK_APP_ASSETS_PATH = "smart.framework.app.assets.path";
+
+    /**
+     * jspPath 与 静态资源文件目录有默认值
+     */
+    String SMART_FRAMEWORK_APP_JSP_PATH_DEFAULT_VALUE = "/WEB-INF/view/";
+    String SMART_FRAMEWORK_APP_ASSETS_PATH_DEFAULT_VALUE = "/WEB-INF/assets/";
+
 
 }

@@ -1,5 +1,7 @@
 package work.lishubin.smart4j.framework.bean.helper;
 
+
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +9,7 @@ import java.util.List;
  * @author 李树彬
  * @date 2019/8/31  22:32
  */
-public class LoadHelper {
+public class HelperLoader {
 
     private static final List<Class<?>> CLASS_LIST = new ArrayList<>();
 

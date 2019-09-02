@@ -34,4 +34,34 @@ public class SmartRequest {
     public void setRequestUrl(String requestUrl) {
         this.requestUrl = requestUrl;
     }
+
+    @Override
+    public int hashCode() {
+        return String.format(
+                "%s%s",
+                String.valueOf(requestMethod.hashCode()),
+                String.valueOf(requestUrl.hashCode())).hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        boolean flag = false;
+
+        if (obj instanceof SmartRequest){
+            SmartRequest compared = (SmartRequest) obj;
+            if (
+                    (this.getRequestUrl().equals(compared.getRequestUrl()))
+                    &&
+                    (this.getRequestMethod().equals(compared.getRequestMethod()))
+            ){
+                flag = true;
+            }
+
+        }
+
+        return flag;
+
+
+
+    }
 }
