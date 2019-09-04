@@ -34,5 +34,7 @@ public class HelperLoader {
 
     }
 
-
+    public static List<Class<?>> getClassList() {
+        return CLASS_LIST;
+    }
 }

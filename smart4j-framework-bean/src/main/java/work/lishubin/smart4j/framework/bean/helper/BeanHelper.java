@@ -44,4 +44,15 @@ public class BeanHelper {
         }
         return instance;
     }
+
+    /**
+     * 放入一组 类和对象之间的映射关系
+     * @param cls 类
+     * @param bean 对象bean
+     */
+    public static void putBean(Class<?> cls,Object bean){
+        BEAN_MAP.put(cls,bean);
+    }
+
+
 }

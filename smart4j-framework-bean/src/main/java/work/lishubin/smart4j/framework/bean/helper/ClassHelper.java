@@ -50,7 +50,7 @@ public class ClassHelper {
         return getClassSetWithAnnotation(Controller.class);
     }
 
-    private static Set<Class<?>> getClassSetWithAnnotation(Class<? extends Annotation> annotation){
+    public static Set<Class<?>> getClassSetWithAnnotation(Class<? extends Annotation> annotation){
 
         Set<Class<?>> serviceClassSet = new HashSet<>();
 
@@ -62,6 +62,23 @@ public class ClassHelper {
             }
         }
         return serviceClassSet;
+    }
+
+    // 获取扩展了父类的子类集合
+    public static Set<Class<?>> getClassSetBySuperClass(Class superClass){
+
+        Set<Class<?>> classSet = new HashSet<>();
+        Set<Class<?>> allClassSet = getClassSet();
+        for (Class<?> cls : allClassSet) {
+
+            if (superClass.isAssignableFrom(cls) && !cls.equals(superClass)) {
+                classSet.add(cls);
+            }
+
+        }
+
+        return classSet;
+
     }
 
 

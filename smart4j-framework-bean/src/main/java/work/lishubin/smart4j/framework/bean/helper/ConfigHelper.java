@@ -45,11 +45,9 @@ public class ConfigHelper {
                 ConfigConstant.SMART_FRAMEWORK_APP_ASSETS_PATH_DEFAULT_VALUE);
     }
 
-    private static Properties getConfigProp() {
+    public static Properties getConfigProp() {
         return CONFIG_PROP;
     }
 
-    public static void setConfigProp(Properties configProp) {
-        CONFIG_PROP = configProp;
-    }
+
 }
