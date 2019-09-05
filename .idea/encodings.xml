@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/smart4j-framework-aop" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/smart4j-framework-bean" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/smart4j-framework-commons" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/smart4j-framework-dependencies" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/smart4j-framework-utils" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/smart4j-framework-webmvc" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/smart4j-framework-webtest" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>

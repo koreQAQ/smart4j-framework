@@ -4,6 +4,7 @@ import work.lishubin.smart4j.framework.bean.helper.BeanHelper;
 import work.lishubin.smart4j.framework.bean.helper.ClassHelper;
 import work.lishubin.srmart4j.framework.aop.annotation.Aspect;
 import work.lishubin.srmart4j.framework.aop.aspect.AbstractAspectProxy;
+import work.lishubin.srmart4j.framework.aop.aspect.TransactionAspect;
 import work.lishubin.srmart4j.framework.aop.proxy.Proxy;
 import work.lishubin.srmart4j.framework.aop.proxy.ProxyManager;
 
@@ -35,6 +36,7 @@ public class AopHelper {
 
     }
 
+    private static Integer MAX_SIZE = 256;
 
     /**
      *  根据@Aspect注解中指明的切入点类注解，调用ClassHelper#getClassSetWithAnnotation
@@ -71,22 +73,37 @@ public class AopHelper {
      */
     private static Map<Class<?>,Set<Class<?>>> createProxyMap(){
 
-        Map<Class<?>, Set<Class<?>>> proxyMap = new HashMap<>();
+        Map<Class<?>, Set<Class<?>>> proxyMap = new HashMap<>(MAX_SIZE);
 
 
+        // 1.找到所有扩展了AspectProxy且带有@Aspect注解的类
+
+        addAspectMap(proxyMap);
+        addTransactionMap(proxyMap);
+        return proxyMap;
+    }
+
+    private static void addAspectMap(Map<Class<?>, Set<Class<?>>> proxyMap) {
         // 1.找到所有扩展了AspectProxy且带有@Aspect注解的类
 
         Set<Class<?>> classSetByAspectProxy = ClassHelper.getClassSetBySuperClass(AbstractAspectProxy.class);
         for (Class<?> proxyClass : classSetByAspectProxy) {
 
-            if (proxyClass!=null && proxyClass.isAnnotationPresent(Aspect.class)){
+            if (proxyClass != null && proxyClass.isAnnotationPresent(Aspect.class)) {
 
                 Set<Class<?>> targetProxiedClassSet = getTargetClass(proxyClass.getAnnotation(Aspect.class));
                 proxyMap.put(proxyClass, targetProxiedClassSet);
 
             }
         }
-        return proxyMap;
+    }
+
+    private static Map<Class<?>, Set<Class<?>>> addTransactionMap(Map<Class<?>, Set<Class<?>>> proxyMap) {
+        Map<Class<?>, Set<Class<?>>> transactionMap = new HashMap<>(MAX_SIZE);
+        Set<Class<?>> serviceClass = ClassHelper.getServiceClass();
+        transactionMap.put(TransactionAspect.class, serviceClass);
+        return transactionMap;
+
     }
 
     /**
@@ -96,7 +113,7 @@ public class AopHelper {
      */
     private static Map<Class<?>, List<Proxy>> getTargetMap(Map<Class<?>, Set<Class<?>>> proxyMap){
 
-        Map<Class<?>, List<Proxy>> targetMap = new HashMap<>();
+        Map<Class<?>, List<Proxy>> targetMap = new HashMap<>(MAX_SIZE);
         try{
             for (Class<?> proxyClass : proxyMap.keySet()) {
 

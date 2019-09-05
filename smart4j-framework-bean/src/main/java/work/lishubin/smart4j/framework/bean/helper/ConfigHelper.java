@@ -1,7 +1,6 @@
 package work.lishubin.smart4j.framework.bean.helper;
 
-import work.lishubin.smart4j.framework.bean.constant.ConfigConstant;
-import work.lishubin.smart4j.framework.utils.CodecUtils;
+import work.lishubin.smart4j.framework.constant.ConfigConstant;
 import work.lishubin.smart4j.framework.utils.PropUtils;
 
 import java.util.Properties;

@@ -1,4 +1,4 @@
-package work.lishubin.smart4j.framework.bean.constant;
+package work.lishubin.smart4j.framework.constant;
 
 /**
  * @author 李树彬

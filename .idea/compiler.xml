@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="smart4j-framework-aop" />
+        <module name="smart4j-framework-utils" />
+        <module name="smart4j-framework-commons" />
+        <module name="smart4j-framework-webtest" />
+        <module name="smart4j-framework-webmvc" />
+        <module name="smart4j-framework-bean" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="smart4j-framework-aop" target="1.8" />
+      <module name="smart4j-framework-bean" target="1.8" />
+      <module name="smart4j-framework-commons" target="1.8" />
+      <module name="smart4j-framework-dependencies" target="1.8" />
+      <module name="smart4j-framework-utils" target="1.8" />
+      <module name="smart4j-framework-webmvc" target="1.8" />
+      <module name="smart4j-framework-webtest" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

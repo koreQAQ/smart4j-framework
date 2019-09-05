@@ -4,13 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import work.lishubin.smart4j.framework.bean.annotation.Controller;
 import work.lishubin.smart4j.framework.bean.annotation.Service;
-import work.lishubin.smart4j.framework.bean.constant.ConfigConstant;
+import work.lishubin.smart4j.framework.constant.ConfigConstant;
 import work.lishubin.smart4j.framework.utils.ClassUtils;
 import work.lishubin.smart4j.framework.utils.PropUtils;
 
 import java.lang.annotation.Annotation;
 import java.util.HashSet;
-import java.util.Properties;
 import java.util.Set;
 
 /**
@@ -64,7 +63,12 @@ public class ClassHelper {
         return serviceClassSet;
     }
 
-    // 获取扩展了父类的子类集合
+    /**
+     * 获取扩展了父类的子类集合
+     *
+     * @param superClass 父类
+     * @return 扩展父类的子类集合
+     */
     public static Set<Class<?>> getClassSetBySuperClass(Class superClass){
 
         Set<Class<?>> classSet = new HashSet<>();
