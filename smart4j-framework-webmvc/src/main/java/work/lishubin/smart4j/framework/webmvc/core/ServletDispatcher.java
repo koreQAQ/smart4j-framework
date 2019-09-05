@@ -1,12 +1,14 @@
 package work.lishubin.smart4j.framework.webmvc.core;
 
 import work.lishubin.smart4j.framework.bean.helper.BeanHelper;
-import work.lishubin.smart4j.framework.bean.helper.ClassHelper;
 import work.lishubin.smart4j.framework.bean.helper.ConfigHelper;
-import work.lishubin.smart4j.framework.bean.helper.HelperLoader;
 import work.lishubin.smart4j.framework.utils.*;
-import work.lishubin.smart4j.framework.webmvc.entity.*;
+import work.lishubin.smart4j.framework.webmvc.entity.Data;
+import work.lishubin.smart4j.framework.webmvc.entity.Param;
+import work.lishubin.smart4j.framework.webmvc.entity.SmartHandler;
+import work.lishubin.smart4j.framework.webmvc.entity.View;
 import work.lishubin.smart4j.framework.webmvc.helper.ControllerHelper;
+import work.lishubin.srmart4j.framework.aop.helper.HelpLoaderWithAop;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -19,7 +21,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author 李树彬
@@ -34,7 +39,7 @@ public class ServletDispatcher extends HttpServlet {
 
 
         // 初始化所有的辅助类
-        HelperLoader.init();
+        HelpLoaderWithAop.init();
 
         // 获得整个Servlet的环境
         ServletContext servletContext = config.getServletContext();
@@ -62,6 +67,7 @@ public class ServletDispatcher extends HttpServlet {
      * 统一处理请求并转发
      * todo 模块化service方法，把方法总数减少到80行
      */
+    @SuppressWarnings("AlibabaMethodTooLong")
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -77,13 +83,13 @@ public class ServletDispatcher extends HttpServlet {
             // 得到对应的Controller
             Class<?> controllerClass = smartHandler.getController();
             // 得到对应的Controller实体
-            Object ControllerBean = BeanHelper.getBean(controllerClass);
+            Object controllerBean = BeanHelper.getBean(controllerClass);
             // 得到映射的方法
             Method controllerMethod = smartHandler.getMethod();
 
 
             // 封装请求参数列表，向方法进行传递
-            Param param = Param.getNewInstance(new HashMap<>());
+            Param param = Param.getNewInstance(new HashMap<>(20));
 
             // 遍历整个request的请求参数，将其放入到Param中
             Enumeration<String> attributeNames = request.getAttributeNames();
@@ -120,7 +126,7 @@ public class ServletDispatcher extends HttpServlet {
 
 
             // 调用对应的方法
-            Object methodResult = ReflectionUtils.invokeMethod(ControllerBean, controllerMethod,param);
+            Object methodResult = ReflectionUtils.invokeMethod(controllerBean, controllerMethod, param);
 
 
             // 如果返回结果是视图

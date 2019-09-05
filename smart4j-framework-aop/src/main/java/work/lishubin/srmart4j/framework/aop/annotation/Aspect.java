@@ -2,6 +2,9 @@ package work.lishubin.srmart4j.framework.aop.annotation;
 
 import java.lang.annotation.*;
 
+/**
+ * @author lenovo
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Aspect {

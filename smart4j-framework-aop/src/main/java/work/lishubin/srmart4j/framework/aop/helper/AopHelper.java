@@ -3,7 +3,7 @@ package work.lishubin.srmart4j.framework.aop.helper;
 import work.lishubin.smart4j.framework.bean.helper.BeanHelper;
 import work.lishubin.smart4j.framework.bean.helper.ClassHelper;
 import work.lishubin.srmart4j.framework.aop.annotation.Aspect;
-import work.lishubin.srmart4j.framework.aop.aspect.AspectProxy;
+import work.lishubin.srmart4j.framework.aop.aspect.AbstractAspectProxy;
 import work.lishubin.srmart4j.framework.aop.proxy.Proxy;
 import work.lishubin.srmart4j.framework.aop.proxy.ProxyManager;
 
@@ -76,7 +76,7 @@ public class AopHelper {
 
         // 1.找到所有扩展了AspectProxy且带有@Aspect注解的类
 
-        Set<Class<?>> classSetByAspectProxy = ClassHelper.getClassSetBySuperClass(AspectProxy.class);
+        Set<Class<?>> classSetByAspectProxy = ClassHelper.getClassSetBySuperClass(AbstractAspectProxy.class);
         for (Class<?> proxyClass : classSetByAspectProxy) {
 
             if (proxyClass!=null && proxyClass.isAnnotationPresent(Aspect.class)){

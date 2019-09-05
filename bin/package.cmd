@@ -11,7 +11,16 @@ cd smart4j-framework-bean
 call mvn clean package install -Dmaven.test.skip=true
 
 cd ..
+cd smart4j-framework-aop
+call mvn clean package install -Dmaven.test.skip=true
+
+cd ..
 cd smart4j-framework-webmvc
+call mvn clean package install -Dmaven.test.skip=true
+
+
+cd ..
+cd smart4j-framework-webtest
 call mvn clean package install -Dmaven.test.skip=true
 
 cd ..

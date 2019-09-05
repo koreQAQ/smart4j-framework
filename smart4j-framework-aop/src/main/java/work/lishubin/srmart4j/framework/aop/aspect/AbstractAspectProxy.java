@@ -11,9 +11,9 @@ import java.lang.reflect.Method;
  * 实现Proxy接口，采用钩子函数的方式，使其他扩展了该类的接口重写钩子函数接口。
  * @author lishubin
  */
-public abstract class AspectProxy implements Proxy {
+public abstract class AbstractAspectProxy implements Proxy {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AspectProxy.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAspectProxy.class);
 
 
     private Object beginResult = null;
@@ -27,11 +27,12 @@ public abstract class AspectProxy implements Proxy {
     @Override
     public Object doProxy(ProxyChain proxyChain) {
 
-        beginResult = begin();
 
         Class targetClass = proxyChain.getTargetClass();
         Method targetMethod = proxyChain.getTargetMethod();
         Object[] methodArgs = proxyChain.getMethodArgs();
+
+        beginResult = begin(targetClass, targetMethod, methodArgs);
         try{
             if (intercept(targetClass,targetMethod,methodArgs)){
 
@@ -51,7 +52,7 @@ public abstract class AspectProxy implements Proxy {
 
         }
         finally {
-            endResult = end();
+            endResult = end(targetClass, targetMethod, methodArgs);
         }
 
         return methodResult;
@@ -79,11 +80,11 @@ public abstract class AspectProxy implements Proxy {
         return null;
     }
 
-    protected <T> T begin(){
+    protected <T> T begin(Class<?> targetClass, Method targetMethod, Object[] methodArgs) {
         return null;
     }
 
-    protected <T> T end(){
+    protected <T> T end(Class<?> targetClass, Method targetMethod, Object[] methodArgs) {
         return null;
     }
 
