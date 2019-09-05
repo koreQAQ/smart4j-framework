@@ -8,6 +8,7 @@ import work.lishubin.srmart4j.framework.aop.proxy.ProxyChain;
 import java.lang.reflect.Method;
 
 /**
+ * 实现Proxy接口，采用钩子函数的方式，使其他扩展了该类的接口重写钩子函数接口。
  * @author lishubin
  */
 public abstract class AspectProxy implements Proxy {

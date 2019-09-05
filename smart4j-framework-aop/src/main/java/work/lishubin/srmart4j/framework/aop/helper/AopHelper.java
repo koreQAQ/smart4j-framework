@@ -21,7 +21,7 @@ public class AopHelper {
         Map<Class<?>, Set<Class<?>>> proxyMap = createProxyMap();
         Map<Class<?>, List<Proxy>> targetMap = getTargetMap(proxyMap);
 
-        // 产生真正链式执行切面的代理对象
+        // 产生真正链式执行切面方法进行横切的代理对象
         for (Map.Entry<Class<?>, List<Proxy>> targetEntry : targetMap.entrySet()) {
             Class<?> proxiedClass = targetEntry.getKey();
             List<Proxy> proxyList = targetEntry.getValue();
@@ -36,6 +36,12 @@ public class AopHelper {
     }
 
 
+    /**
+     *  根据@Aspect注解中指明的切入点类注解，调用ClassHelper#getClassSetWithAnnotation
+     *  获取被切入代理类的集合
+     * @param aspect 横切代理的Aspect注解
+     * @return 被切入代理类的集合
+     */
     private static Set<Class<?>> getTargetClass(Aspect aspect){
 
         Set<Class<?>> targetClassSet = new HashSet<>();
@@ -60,7 +66,7 @@ public class AopHelper {
     }
 
     /**
-     * 建立起 代理类与被代理类集合之间的关系
+     * 建立起 代理类与被代理类集合之间的关系，为了得到 每一个切入代理类 横切了哪些类(集合)
      * @return  代理类与被代理类集合之间的关系
      */
     private static Map<Class<?>,Set<Class<?>>> createProxyMap(){
@@ -83,6 +89,11 @@ public class AopHelper {
         return proxyMap;
     }
 
+    /**
+     * 是为了得到 每一个被横切代理的类与横切他们的代理类集合 之间的映射关系
+     * @param proxyMap 横切代理类与被这个横切代理类横切的类集合
+     * @return 被横切代理的类 与 横切这些类的集合 之间的映射关系
+     */
     private static Map<Class<?>, List<Proxy>> getTargetMap(Map<Class<?>, Set<Class<?>>> proxyMap){
 
         Map<Class<?>, List<Proxy>> targetMap = new HashMap<>();
