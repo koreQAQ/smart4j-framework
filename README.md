@@ -29,6 +29,10 @@ public class UserController{
 
 ```
 
-## 相关模块
+## 主要功能模块
+- Bean 模块 [smart4j-framework-bean](./smart4j-framework-bean/README.md)
 - AOP 模块 [smart4j-framework-aop](./smart4j-framework-aop/README.md)
 - MVC 模块 [smart4j-framework-mvc](./smart4j-framework-webmvc/README.md)
+- Data 模块 [smart4j-framework-data](./smart4j-framework-data/README.md)
+## 功能依赖模块
+- Utils 模块

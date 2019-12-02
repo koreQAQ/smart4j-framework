@@ -1,11 +1,9 @@
 package work.lishubin.smart4j.framework.utils;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.URL;
@@ -34,6 +32,7 @@ public class ClassUtils {
         Class<?> cls = null;
         try {
             cls = Class.forName(className, isInitialized, getClassLoader());
+            LOGGER.info("load {} class", className);
         } catch (ClassNotFoundException e) {
             LOGGER.error("the class not found,Pls check the package",e);
         }

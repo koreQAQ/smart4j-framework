@@ -8,7 +8,13 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * ProUtils Used to read configuration file information
+ * - PropUtils
+ * <p>
+ * 1. This tool class mainly realizes reading the corresponding Properties file
+ * 2. Get the corresponding value according to the given Properties and key
+ * 3. Get the corresponding value according to the given Properties and key, defaultValue
+ * get value by key, return defaultValue if value does not exist, and set
+ *
  * @author lishubin
  * @date 2019/8/29  23:15
  */
@@ -50,7 +56,7 @@ public class PropUtils {
     }
 
     /**
-     * Provides methods to return default values
+     * Get the corresponding value according to the given Properties and key, defaultValue
      * @param properties properties
      * @param key select
      * @param defaultValue value
@@ -58,8 +64,10 @@ public class PropUtils {
      */
     public static String getStringValueWithDefault(Properties properties,String key,String defaultValue){
         String value= defaultValue;
-        if (properties.containsKey(key)){
+        if (properties.containsKey(key)) {
             value = properties.getProperty(key);
+        } else {
+            properties.setProperty(key, defaultValue);
         }
         return value;
 

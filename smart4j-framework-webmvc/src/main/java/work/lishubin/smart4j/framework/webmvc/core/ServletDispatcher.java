@@ -8,6 +8,7 @@ import work.lishubin.smart4j.framework.webmvc.entity.Param;
 import work.lishubin.smart4j.framework.webmvc.entity.SmartHandler;
 import work.lishubin.smart4j.framework.webmvc.entity.View;
 import work.lishubin.smart4j.framework.webmvc.helper.ControllerHelper;
+import work.lishubin.smart4j.framework.webmvc.helper.ServletHelper;
 import work.lishubin.srmart4j.framework.aop.helper.HelpLoaderWithAop;
 
 import javax.servlet.ServletConfig;
@@ -35,7 +36,7 @@ public class ServletDispatcher extends HttpServlet {
 
 
     @Override
-    public void init(ServletConfig config) throws ServletException {
+    public void init(ServletConfig config) {
 
 
         // 初始化所有的辅助类
@@ -65,133 +66,138 @@ public class ServletDispatcher extends HttpServlet {
 
     /**
      * 统一处理请求并转发
-     * todo 模块化service方法，把方法总数减少到80行
      */
     @SuppressWarnings("AlibabaMethodTooLong")
     @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void service(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-        // 获取请求的信息
-        String requestMethod = request.getMethod().toLowerCase();
-        String requestUrl = request.getPathInfo();
+        ServletHelper.init(request, response);
 
-        SmartHandler smartHandler = ControllerHelper.getSmartHandler(requestMethod,requestUrl);
-
-        // 查到存在对应的Handler
-        if (!Objects.isNull(smartHandler)) {
-
-            // 得到对应的Controller
-            Class<?> controllerClass = smartHandler.getController();
-            // 得到对应的Controller实体
-            Object controllerBean = BeanHelper.getBean(controllerClass);
-            // 得到映射的方法
-            Method controllerMethod = smartHandler.getMethod();
+        try {
 
 
-            // 封装请求参数列表，向方法进行传递
-            Param param = Param.getNewInstance(new HashMap<>(20));
+            // 获取请求的信息
+            String requestMethod = request.getMethod().toLowerCase();
+            String requestUrl = request.getPathInfo();
 
-            // 遍历整个request的请求参数，将其放入到Param中
-            Enumeration<String> attributeNames = request.getAttributeNames();
+            SmartHandler smartHandler = ControllerHelper.getSmartHandler(requestMethod, requestUrl);
 
-            while (attributeNames.hasMoreElements()) {
-                String attributeName = attributeNames.nextElement();
-                Object attributeValue = request.getAttribute(attributeName);
+            // 查到存在对应的Handler
+            if (!Objects.isNull(smartHandler)) {
 
-                param.addAttribute(attributeName,attributeValue);
-            }
+                // 得到对应的Controller
+                Class<?> controllerClass = smartHandler.getController();
+                // 得到对应的Controller实体
+                Object controllerBean = BeanHelper.getBean(controllerClass);
+                // 得到映射的方法
+                Method controllerMethod = smartHandler.getMethod();
 
-            // 遍历请求体中的参数封装
 
-            String body = CodecUtils.decode(StreamUtils.getString(request.getInputStream()));
+                // 封装请求参数列表，向方法进行传递
+                Param param = Param.getNewInstance(new HashMap<>(20));
 
-            if (StringUtils.isNotEmpty(body)){
+                // 遍历整个request的请求参数，将其放入到Param中
+                Enumeration<String> attributeNames = request.getAttributeNames();
 
-                String[] paramArray = StringUtils.spiltString(body, "&");
+                while (attributeNames.hasMoreElements()) {
+                    String attributeName = attributeNames.nextElement();
+                    Object attributeValue = request.getAttribute(attributeName);
 
-                // 遍历每一组参数
-                for (String eachParam : paramArray) {
+                    param.addAttribute(attributeName, attributeValue);
+                }
 
-                    String[] paramWithKeyAndValue = StringUtils.spiltString(eachParam, "=");
+                // 遍历请求体中的参数封装
 
-                    if (paramWithKeyAndValue.length == 2){
+                String body = CodecUtils.decode(StreamUtils.getString(request.getInputStream()));
 
-                        String paramKey = paramWithKeyAndValue[0];
-                        String paramValue = paramWithKeyAndValue[1];
-                        param.addAttribute(paramKey,paramValue);
+                if (StringUtils.isNotEmpty(body)) {
+
+                    String[] paramArray = StringUtils.spiltString(body, "&");
+
+                    // 遍历每一组参数
+                    for (String eachParam : paramArray) {
+
+                        String[] paramWithKeyAndValue = StringUtils.spiltString(eachParam, "=");
+
+                        if (paramWithKeyAndValue.length == 2) {
+
+                            String paramKey = paramWithKeyAndValue[0];
+                            String paramValue = paramWithKeyAndValue[1];
+                            param.addAttribute(paramKey, paramValue);
+                        }
                     }
                 }
-            }
 
 
+                // 调用对应的方法
+                Object methodResult = ReflectionUtils.invokeMethod(controllerBean, controllerMethod, param);
 
-            // 调用对应的方法
-            Object methodResult = ReflectionUtils.invokeMethod(controllerBean, controllerMethod, param);
 
+                // 如果返回结果是视图
+                if (methodResult instanceof View) {
+                    View view = (View) methodResult;
+                    String viewPath = view.getViewPath();
 
-            // 如果返回结果是视图
-            if (methodResult instanceof View){
-                View view = (View) methodResult;
-                String viewPath = view.getViewPath();
-
-                // viewPath 有两种
-                // - 转发
-                // - 重定向
-                String[] viewPathWithMethod = viewPath.split(":");
-                // 转发情况
-                // 长度为1 则是转发请求
-                if (viewPathWithMethod.length==1){
-                    // 放入model进入request
-                    Map<String, Object> viewModel = view.getModel();
-                    for (String key : viewModel.keySet()) {
-                        request.setAttribute(key,viewModel.get(key));
+                    // viewPath 有两种
+                    // - 转发
+                    // - 重定向
+                    String[] viewPathWithMethod = viewPath.split(":");
+                    // 转发情况
+                    // 长度为1 则是转发请求
+                    if (viewPathWithMethod.length == 1) {
+                        // 放入model进入request
+                        Map<String, Object> viewModel = view.getModel();
+                        for (String key : viewModel.keySet()) {
+                            request.setAttribute(key, viewModel.get(key));
+                        }
+                        request.getRequestDispatcher(
+                                String.format("%s%s",
+                                        ConfigHelper.getAppJspPath(), viewPath))
+                                .forward(request, response);
                     }
-                    String requestPath = String.format("%s%s",
-                            ConfigHelper.getAppJspPath(),viewPath);
-                    request.getRequestDispatcher(
-                            String.format("%s%s",
-                            ConfigHelper.getAppJspPath(),viewPath))
-                            .forward(request,response);
+                    // 长度为2 重定向
+                    else {
+                        // 重定向的相关设置
+                        response.sendRedirect(String.format("%s%s", request.getContextPath(), viewPath));
+                    }
                 }
-                // 长度为2 重定向
-                else {
-                    // 重定向的相关设置
-                    response.sendRedirect(String.format("%s%s", request.getContextPath(), viewPath));
+                // 如果返回结果是数据
+                else if (methodResult instanceof Data) {
+                    Data data = (Data) methodResult;
+                    // 获取封装的数据模型
+                    Map<String, Object> model = data.getModel();
+
+                    String parseString = JsonUtils.parseString(model);
+
+                    // 设置response的输出
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    PrintWriter writer = response.getWriter();
+                    writer.write(parseString);
+                    writer.flush();
+                    writer.close();
                 }
+
             }
-            // 如果返回结果是数据
-            else if (methodResult instanceof Data){
-                Data data = (Data) methodResult;
-                // 获取封装的数据模型
-                Map<String, Object> model = data.getModel();
 
-                String parseString = JsonUtils.parseString(model);
-
-                // 设置response的输出
-                response.setContentType("application/json");
+            // 返回404页面
+            else {
+                response.setContentType("text/html");
                 response.setCharacterEncoding("UTF-8");
+
+
                 PrintWriter writer = response.getWriter();
-                writer.write(parseString);
+                String contextHtml = CodecUtils.decode(StreamUtils.getString(
+                        Thread.currentThread().getContextClassLoader()
+                                .getResourceAsStream("404.html")));
+                writer.write(contextHtml);
                 writer.flush();
                 writer.close();
+
             }
-
-        }
-
-        // 返回404页面
-        else{
-            response.setContentType("text/html");
-            response.setCharacterEncoding("UTF-8");
-
-
-            PrintWriter writer = response.getWriter();
-            String contextHtml = CodecUtils.decode(StreamUtils.getString(
-                    Thread.currentThread().getContextClassLoader()
-                            .getResourceAsStream("404.html")));
-            writer.write(contextHtml);
-            writer.flush();
-            writer.close();
-
+        } finally {
+            ServletHelper.destroy();
         }
     }
 
