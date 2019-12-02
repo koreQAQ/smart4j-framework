@@ -1,10 +1,7 @@
-package work.lishubin.smart4j.framework.bean.helper;
+package work.lishubin.smart4j.framework.helper;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import work.lishubin.smart4j.framework.bean.annotation.Controller;
-import work.lishubin.smart4j.framework.bean.annotation.Service;
-import work.lishubin.smart4j.framework.constant.ConfigConstant;
+import lombok.extern.slf4j.Slf4j;
+import work.lishubin.smart4j.framework.constant.BeanConfigStant;
 import work.lishubin.smart4j.framework.utils.ClassUtils;
 import work.lishubin.smart4j.framework.utils.PropUtils;
 
@@ -13,43 +10,35 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 获得包下的所有类
  * @author 李树彬
- * @date 2019/8/30  0:15
+ * @version 1.0.0
+ * @date 2019/12/2 16:49
  */
-public class ClassHelper {
-
+@Slf4j
+public class AbstractClassHelper {
 
     private static final Set<Class<?>> CLASS_SET = new HashSet<>();
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BeanHelper.class);
 
     // 加载项目基础包下所有的类到classSet中统一管理
     static {
 
         Set<Class<?>> allClassSetByPackage = ClassUtils.getAllClassSetByPackage(
-            PropUtils.getStringValue(
-                ConfigHelper.getConfigProp(),
-                ConfigConstant.SMART_FRAMEWORK_BASE_PACKAGE
-            )
+                PropUtils.getStringValue(
+                        AbstractConfigHelper.getConfigProp(), BeanConfigStant.SMART_FRAMEWORK_BASE_PACKAGE
+                )
         );
+        log.info("load base-package class into CLASS_SET {}", allClassSetByPackage);
         CLASS_SET.addAll(allClassSetByPackage);
 
     }
 
-    public static Set<Class<?>> getClassSet(){
+    public static Set<Class<?>> getClassSet() {
         return CLASS_SET;
     }
 
-    public static Set<Class<?>> getServiceClass(){
-        return getClassSetWithAnnotation(Service.class);
-    }
 
-    public static Set<Class<?>> getControllerClass(){
-        return getClassSetWithAnnotation(Controller.class);
-    }
-
-    public static Set<Class<?>> getClassSetWithAnnotation(Class<? extends Annotation> annotation){
+    protected static Set<Class<?>> getClassSetWithAnnotation(Class<? extends Annotation> annotation) {
 
         Set<Class<?>> serviceClassSet = new HashSet<>();
 
@@ -69,7 +58,7 @@ public class ClassHelper {
      * @param superClass 父类
      * @return 扩展父类的子类集合
      */
-    public static Set<Class<?>> getClassSetBySuperClass(Class superClass){
+    protected static Set<Class<?>> getClassSetBySuperClass(Class superClass) {
 
         Set<Class<?>> classSet = new HashSet<>();
         Set<Class<?>> allClassSet = getClassSet();
@@ -84,10 +73,5 @@ public class ClassHelper {
         return classSet;
 
     }
-
-
-
-
-
 
 }

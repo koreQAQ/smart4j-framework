@@ -1,8 +1,6 @@
 package work.lishubin.smart4j.framework.webmvc.helper;
 
 import work.lishubin.smart4j.framework.bean.annotation.Action;
-import work.lishubin.smart4j.framework.bean.helper.ClassHelper;
-import work.lishubin.smart4j.framework.utils.ReflectionUtils;
 import work.lishubin.smart4j.framework.webmvc.entity.SmartHandler;
 import work.lishubin.smart4j.framework.webmvc.entity.SmartRequest;
 
@@ -24,7 +22,7 @@ public class ControllerHelper {
 
     static {
 
-        Set<Class<?>> controllerClassSet = ClassHelper.getControllerClass();
+        Set<Class<?>> controllerClassSet = MvcClassHelper.getControllerClass();
 
         // 遍历每一个controller
         for (Class<?> controllerClass : controllerClassSet) {

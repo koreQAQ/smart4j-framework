@@ -1,22 +1,19 @@
 package work.lishubin.smart4j.framework.helper;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import work.lishubin.smart4j.framework.constant.ConfigConstant;
+import work.lishubin.smart4j.framework.utils.PropUtils;
+
+import java.util.Properties;
 
 /**
  * @author 李树彬
  * @version 1.0.0
  * @date 2019/12/2 14:21
  */
-
+@Slf4j
 public abstract class AbstractConfigHelper {
-
-
-    /**
-     * 日志
-     */
-    protected final Logger LOGGER = LoggerFactory.getLogger(AbstractConfigHelper.class);
 
 
     /**
@@ -25,6 +22,13 @@ public abstract class AbstractConfigHelper {
     public void setConfiguration() {
 
 
+    }
+
+    private static Properties CONFIG_PROP = PropUtils.getProperties(ConfigConstant.CONFIG_FILE);
+
+    public static Properties getConfigProp() {
+        log.info("CONFIG_PROP is {}", CONFIG_PROP);
+        return CONFIG_PROP;
     }
 
 

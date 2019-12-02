@@ -1,7 +1,6 @@
 package work.lishubin.srmart4j.framework.aop.helper;
 
 import work.lishubin.smart4j.framework.bean.helper.BeanHelper;
-import work.lishubin.smart4j.framework.bean.helper.ClassHelper;
 import work.lishubin.srmart4j.framework.aop.annotation.Aspect;
 import work.lishubin.srmart4j.framework.aop.aspect.AbstractAspectProxy;
 import work.lishubin.srmart4j.framework.aop.aspect.TransactionAspect;
@@ -52,7 +51,7 @@ public class AopHelper {
         Class<? extends Annotation> cutPointAnnotation = aspect.value();
 
         // 2. 得到有切点注解的类集合
-        Set<Class<?>> classSetWithAnnotation = ClassHelper.getClassSetWithAnnotation(cutPointAnnotation);
+        Set<Class<?>> classSetWithAnnotation = AopClassHelper.getClassSetWithAnnotation(cutPointAnnotation);
 
         // 3. 遍历含有切点注解的类集合
         for (Class<?> classWithAnnotation : classSetWithAnnotation) {
@@ -86,7 +85,7 @@ public class AopHelper {
     private static void addAspectMap(Map<Class<?>, Set<Class<?>>> proxyMap) {
         // 1.找到所有扩展了AspectProxy且带有@Aspect注解的类
 
-        Set<Class<?>> classSetByAspectProxy = ClassHelper.getClassSetBySuperClass(AbstractAspectProxy.class);
+        Set<Class<?>> classSetByAspectProxy = AopClassHelper.getClassSetBySuperClass(AbstractAspectProxy.class);
         for (Class<?> proxyClass : classSetByAspectProxy) {
 
             if (proxyClass != null && proxyClass.isAnnotationPresent(Aspect.class)) {
@@ -100,7 +99,7 @@ public class AopHelper {
 
     private static Map<Class<?>, Set<Class<?>>> addTransactionMap(Map<Class<?>, Set<Class<?>>> proxyMap) {
         Map<Class<?>, Set<Class<?>>> transactionMap = new HashMap<>(MAX_SIZE);
-        Set<Class<?>> serviceClass = ClassHelper.getServiceClass();
+        Set<Class<?>> serviceClass = AopClassHelper.getServiceClass();
         transactionMap.put(TransactionAspect.class, serviceClass);
         return transactionMap;
 

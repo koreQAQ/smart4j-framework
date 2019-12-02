@@ -1,7 +1,6 @@
 package work.lishubin.smart4j.framework.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,10 +15,8 @@ import java.util.jar.JarEntry;
  * @author 李树彬
  * @date 2019/8/30  0:18
  */
-
+@Slf4j
 public class ClassUtils {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClassUtils.class);
 
     //todo
 
@@ -32,9 +29,9 @@ public class ClassUtils {
         Class<?> cls = null;
         try {
             cls = Class.forName(className, isInitialized, getClassLoader());
-            LOGGER.info("load {} class", className);
+            log.info("load {} class", className);
         } catch (ClassNotFoundException e) {
-            LOGGER.error("the class not found,Pls check the package",e);
+            log.error("the class not found,Pls check the package", e);
         }
 
         return cls;
@@ -62,7 +59,7 @@ public class ClassUtils {
                 // 如果协议是普通文件类型，那么
                 if ("file".equals(protocol)){
                     //去除空格转义
-                    packagePath.replaceAll("%20", " ");
+                    packagePath = packagePath.replaceAll("%20", " ");
 
                     addClass(classSet,packagePath,packageName);
                 }
@@ -84,8 +81,8 @@ public class ClassUtils {
                             String jarEntryName = jarEntry.getName();
     
                             //将`/`替换为`.` 并去除.class后缀
-                            jarEntryName.substring(0,jarEntryName.lastIndexOf(".")).replaceAll("/",".");
-                            doAddClass(classSet,jarEntryName);
+                            jarEntryName = jarEntryName.substring(0, jarEntryName.lastIndexOf(".")).replaceAll("/", ".");
+                            doAddClass(classSet, jarEntryName);
                         }
                     }
 
@@ -94,7 +91,7 @@ public class ClassUtils {
             }
 
         } catch (IOException e) {
-            LOGGER.error("find class error Pls check getAllClassSetByPackage function",e);
+            log.error("find class error Pls check getAllClassSetByPackage function", e);
         }
 
         return classSet;

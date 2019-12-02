@@ -3,7 +3,7 @@ package work.lishubin.smart4j.framework.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import work.lishubin.smart4j.framework.commons.MyThreadLocal;
-import work.lishubin.smart4j.framework.constant.ConfigConstant;
+import work.lishubin.smart4j.framework.constant.DataConfigStant;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,11 +24,11 @@ public class DataBaseUtils {
     private static String JDBC_PASSWORD;
 
     static {
-        Properties configProp = PropUtils.getProperties(ConfigConstant.CONFIG_FILE);
-        JDBC_DRIVER = PropUtils.getStringValue(configProp, ConfigConstant.SMART_FRAMEWORK_JDBC_DRIVER);
-        JDBC_URL = PropUtils.getStringValue(configProp, ConfigConstant.SMART_FRAMEWORK_JDBC_URL);
-        JDBC_USERNAME = PropUtils.getStringValue(configProp, ConfigConstant.SMART_FRAMEWORK_JDBC_USERNAME);
-        JDBC_PASSWORD = PropUtils.getStringValue(configProp, ConfigConstant.SMART_FRAMEWORK_JDBC_PASSWORD);
+        Properties configProp = PropUtils.getProperties(DataConfigStant.CONFIG_FILE);
+        JDBC_DRIVER = PropUtils.getStringValue(configProp, DataConfigStant.SMART_FRAMEWORK_JDBC_DRIVER);
+        JDBC_URL = PropUtils.getStringValue(configProp, DataConfigStant.SMART_FRAMEWORK_JDBC_URL);
+        JDBC_USERNAME = PropUtils.getStringValue(configProp, DataConfigStant.SMART_FRAMEWORK_JDBC_USERNAME);
+        JDBC_PASSWORD = PropUtils.getStringValue(configProp, DataConfigStant.SMART_FRAMEWORK_JDBC_PASSWORD);
 
     }
 

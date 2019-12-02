@@ -16,7 +16,7 @@ public class HelperLoader {
     static {
 
         CLASS_LIST.add(ConfigHelper.class);
-        CLASS_LIST.add(ClassHelper.class);
+        CLASS_LIST.add(BeanClassHelper.class);
         CLASS_LIST.add(BeanHelper.class);
         CLASS_LIST.add(IocHelper.class);
 
@@ -36,5 +36,11 @@ public class HelperLoader {
 
     public static List<Class<?>> getClassList() {
         return CLASS_LIST;
+    }
+
+    public static void appendClassList(List<Class<?>> appendClassSet) {
+
+        CLASS_LIST.addAll(appendClassSet);
+
     }
 }

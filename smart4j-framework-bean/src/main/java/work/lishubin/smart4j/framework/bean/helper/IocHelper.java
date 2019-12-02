@@ -10,7 +10,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 负责将ClassHelper得到的类中的Service注入到Controller中
+ * 负责将Bean注入到对应的@Inject位置
+ *
  * @author 李树彬
  * @date 2019/8/31  8:43
  */
@@ -18,11 +19,13 @@ public class IocHelper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IocHelper.class);
 
-    static{
+    static {
+
 
         Map<Class<?>, Object> beanMap = BeanHelper.getBeanMap();
 
-        Set<Class<?>> classSet = beanMap.keySet();
+        //扫描包下的所有类
+        Set<Class<?>> classSet = BeanClassHelper.getClassSet();
 
         for (Class<?> cls : classSet) {
 
@@ -36,11 +39,24 @@ public class IocHelper {
             for (Field declaredField : declaredFields) {
 
                 // 1. 判断是否含有@Inject注解
-                if (declaredField.isAnnotationPresent(Inject.class)){
+                if (declaredField.isAnnotationPresent(Inject.class)) {
 
-                    // 2. 存在的Inject就取得对应的bean,并将bean通过反射注入到属性中
-                    Object fieldInstance = beanMap.get(declaredField.getClass());
-                    ReflectionUtils.setField(classInstance,declaredField,fieldInstance);
+                    // 2. 存在的Inject
+                    // 查看是否已经有对应的对象
+                    Class<?> fieldClass = declaredField.getClass();
+
+
+                    //2.1 根据类名注入
+                    if (beanMap.containsKey(fieldClass)) {
+
+                        // 取得对应的bean,并将bean通过反射注入到属性中
+                        Object fieldInstance = beanMap.get(declaredField.getClass());
+                        ReflectionUtils.setField(classInstance, declaredField, fieldInstance);
+                    }
+                    //根据实现类注入 留给MVC自己实现
+                    else {
+
+                    }
                 }
 
             }

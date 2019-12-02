@@ -1,6 +1,7 @@
 package work.lishubin.smart4j.framework.bean.helper;
 
 import work.lishubin.smart4j.framework.utils.ReflectionUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -19,12 +20,10 @@ public class BeanHelper {
 
     static {
         // 建立起映射关系
-        Set<Class<?>> beanClassSet = ClassHelper.getClassSet();
+        Set<Class<?>> beanClassSet = BeanClassHelper.getBeanClassSet();
         for (Class<?> cls : beanClassSet) {
-
             Object instance = ReflectionUtils.getNewInstance(cls);
             BEAN_MAP.put(cls, instance);
-
         }
     }
 
@@ -46,8 +45,9 @@ public class BeanHelper {
     }
 
     /**
-     * 放入一组 类和对象之间的映射关系
-     * @param cls 类
+     * 放入一组 类和对象之间的映射关系 为了方便AOP模块
+     *
+     * @param cls  类
      * @param bean 对象bean
      */
     public static void putBean(Class<?> cls,Object bean){

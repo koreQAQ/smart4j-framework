@@ -71,13 +71,4 @@ public class ReflectionUtils {
 
     }
 
-
-    private static String upperFirstWord(String word){
-
-        return String.format("%s%s",
-        word.substring(0,1).toUpperCase(),
-                word.substring(1)
-        );
-
-    }
 }
