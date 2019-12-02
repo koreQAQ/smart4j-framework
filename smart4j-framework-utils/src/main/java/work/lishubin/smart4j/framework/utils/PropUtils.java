@@ -27,6 +27,8 @@ public class PropUtils {
         try {
             InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
             if (inputStream!=null){
+                //日志信息打印
+                LOGGER.info("Loading the configuration file - {}", fileName);
                 properties.load(inputStream);
             }
         } catch (IOException e) {
@@ -38,8 +40,9 @@ public class PropUtils {
 
     /**
      * Value by Key from properties, if not, an empty string is returned
-     * @param properties to
-     * @param key select
+     *
+     * @param properties from properties
+     * @param key        select
      * @return result
      */
     public static String getStringValue(Properties properties,String key){
