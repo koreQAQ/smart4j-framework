@@ -1,8 +1,8 @@
 package work.lishubin.smart4j.framework.webmvc.helper;
 
-import work.lishubin.smart4j.framework.bean.annotation.Controller;
-import work.lishubin.smart4j.framework.bean.annotation.Service;
 import work.lishubin.smart4j.framework.helper.AbstractClassHelper;
+import work.lishubin.smart4j.framework.webmvc.annotation.Controller;
+import work.lishubin.smart4j.framework.webmvc.annotation.Service;
 
 import java.util.Set;
 

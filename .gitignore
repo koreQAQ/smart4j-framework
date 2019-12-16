@@ -1,4 +1,10 @@
 *.iml
 target
 .idea/
-test
+test/
+assets/
+smart4j-framework-bean-test/src/main/resources/
+smart4j-framework-webtest/src/main/webapp/WEB-INF/assets/
+smart4j-framework-aop/
+smart4j-framework-aop/src/main/resources/
+smart4j-framework-dependencies/src/main/

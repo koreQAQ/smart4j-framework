@@ -1,7 +1,9 @@
-package work.lishubin.smart4j.framework.helper;
+package work.lishubin.smart4j.framework.webmvc.helper;
 
 import work.lishubin.smart4j.framework.constant.MvcConfigStant;
+import work.lishubin.smart4j.framework.helper.AbstractConfigHelper;
 import work.lishubin.smart4j.framework.utils.PropUtils;
+
 
 /**
  * @author 李树彬
@@ -20,7 +22,8 @@ public class MvcConfigHelper extends AbstractConfigHelper {
         return PropUtils.getStringValueWithDefault(
                 getConfigProp(),
                 MvcConfigStant.SMART_FRAMEWORK_APP_ASSETS_PATH,
-                MvcConfigStant.SMART_FRAMEWORK_APP_ASSETS_PATH_DEFAULT_VALUE);
+                MvcConfigStant.SMART_FRAMEWORK_APP_ASSETS_PATH_DEFAULT_VALUE
+        );
     }
 
 }
