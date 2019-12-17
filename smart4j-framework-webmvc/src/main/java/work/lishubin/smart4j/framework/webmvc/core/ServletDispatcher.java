@@ -3,10 +3,7 @@ package work.lishubin.smart4j.framework.webmvc.core;
 import work.lishubin.smart4j.framework.bean.helper.BeanHelper;
 import work.lishubin.smart4j.framework.bean.helper.ConfigHelper;
 import work.lishubin.smart4j.framework.utils.*;
-import work.lishubin.smart4j.framework.webmvc.entity.Data;
-import work.lishubin.smart4j.framework.webmvc.entity.Param;
-import work.lishubin.smart4j.framework.webmvc.entity.SmartHandler;
-import work.lishubin.smart4j.framework.webmvc.entity.View;
+import work.lishubin.smart4j.framework.webmvc.entity.*;
 import work.lishubin.smart4j.framework.webmvc.helper.ControllerHelper;
 import work.lishubin.smart4j.framework.webmvc.helper.ServletHelper;
 import work.lishubin.srmart4j.framework.aop.helper.HelpLoaderWithAop;
@@ -78,7 +75,15 @@ public class ServletDispatcher extends HttpServlet {
 
 
             // 获取请求的信息
-            String requestMethod = request.getMethod().toLowerCase();
+
+            String urlMethod = request.getMethod().toLowerCase();
+            HttpMethod requestMethod = null;
+            //todo 用策略模式
+            if (urlMethod.equals("get")) {
+                requestMethod = HttpMethod.GET;
+            }
+
+
             String requestUrl = request.getPathInfo();
 
             SmartHandler smartHandler = ControllerHelper.getSmartHandler(requestMethod, requestUrl);

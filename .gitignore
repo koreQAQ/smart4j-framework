@@ -1,6 +1,6 @@
 *.iml
 target
-.idea/
+.idea/*
 test/
 assets/
 smart4j-framework-bean-test/src/main/resources/

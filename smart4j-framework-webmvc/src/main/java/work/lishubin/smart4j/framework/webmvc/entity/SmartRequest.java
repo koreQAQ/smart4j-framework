@@ -6,7 +6,7 @@ package work.lishubin.smart4j.framework.webmvc.entity;
  */
 public class SmartRequest {
 
-    private String requestMethod;
+    private HttpMethod requestMethod;
     private String requestUrl;
 
     /**
@@ -19,11 +19,11 @@ public class SmartRequest {
     }
 
 
-    public String getRequestMethod() {
+    public HttpMethod getRequestMethod() {
         return requestMethod;
     }
 
-    public void setRequestMethod(String requestMethod) {
+    public void setRequestMethod(HttpMethod requestMethod) {
         this.requestMethod = requestMethod;
     }
 

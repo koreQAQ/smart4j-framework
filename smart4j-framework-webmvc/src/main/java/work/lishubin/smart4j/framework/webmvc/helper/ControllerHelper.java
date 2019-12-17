@@ -1,6 +1,7 @@
 package work.lishubin.smart4j.framework.webmvc.helper;
 
-import work.lishubin.smart4j.framework.bean.annotation.Action;
+import work.lishubin.smart4j.framework.webmvc.annotation.Action;
+import work.lishubin.smart4j.framework.webmvc.entity.HttpMethod;
 import work.lishubin.smart4j.framework.webmvc.entity.SmartHandler;
 import work.lishubin.smart4j.framework.webmvc.entity.SmartRequest;
 
@@ -30,29 +31,33 @@ public class ControllerHelper {
             // 获得 Controller 中所有声明的方法
             Method[] declaredMethods = controllerClass.getDeclaredMethods();
 
+
             // 遍历所有方法
             for (Method declaredMethod : declaredMethods) {
 
                 // 如果方法上存在Action注解
-                if (declaredMethod.isAnnotationPresent(Action.class)){
+                if (declaredMethod.isAnnotationPresent(Action.class)) {
 
 
                     // 解析Action注解内容 获取method 和 url
                     Action actionAnnotation = declaredMethod.getAnnotation(Action.class);
-                    String methodWithUrl = actionAnnotation.value();
+                    String requestUrl = actionAnnotation.path();
+                    HttpMethod requestMethod = actionAnnotation.httpMethod();
 
-                    String[] splitString = methodWithUrl.split(":");
-                    String requestMethod = splitString[0];
-                    String requestUrl = splitString[1];
+                    //todo 将Action注解属性封装到Request对象中
 
+
+                    //封装为一个Request对象
                     SmartRequest smartRequest = SmartRequest.getNewInstance();
                     smartRequest.setRequestMethod(requestMethod);
                     smartRequest.setRequestUrl(requestUrl);
 
+                    //封装为一个Handler对象
                     SmartHandler smartHandler = SmartHandler.getNewInstance();
                     smartHandler.setController(controllerClass);
                     smartHandler.setMethod(declaredMethod);
 
+                    //维护这个映射
                     ACTION_MAP.put(smartRequest, smartHandler);
                 }
 
@@ -64,7 +69,7 @@ public class ControllerHelper {
     }
 
 
-    public static SmartHandler getSmartHandler(String requestMethod,String requestUrl){
+    public static SmartHandler getSmartHandler(HttpMethod requestMethod, String requestUrl) {
         SmartRequest smartRequest = SmartRequest.getNewInstance();
         smartRequest.setRequestMethod(requestMethod);
         smartRequest.setRequestUrl(requestUrl);

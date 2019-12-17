@@ -1,5 +1,7 @@
 package work.lishubin.smart4j.framework.webmvc.annotation;
 
+import work.lishubin.smart4j.framework.webmvc.entity.HttpMethod;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -14,10 +16,18 @@ import java.lang.annotation.Target;
 public @interface Action {
 
     /**
-     * 请求方法:请求路径
+     * 请求路径
      *
-     * @return 请求方法:请求路径
+     * @return 请求路径
      */
-    String value();
+    String path();
+
+    /**
+     * 请求方式
+     *
+     * @return 请求方式
+     */
+    HttpMethod httpMethod() default HttpMethod.GET;
+
 
 }

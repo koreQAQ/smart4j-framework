@@ -59,14 +59,29 @@ public class UserController{
 
 ### 3.MVC模块
 
-MVC需要加载对应的@Service和@Controller注解加入bean
+MVC需要加载对应的@Service和@Controller注解加入beanMap
 
 将带有@Service注解的类所实现的接口作为key，实现类为value， 放入Bean_Map
 将ServiceClassSet中的实现类遍历，
 得到每一个对应的接口列表，将每一个接口类，与这个对象形成对应的映射关系，放入Bean_Map中
 
 
+MVC提供了3个注解
+- @Controller  负责标注哪个类是Controller
+- @Action  
+- @Service
+
+新增了Handler和Request对象
+Handler 维护了 Controller 和 对应的处理方法
+Request 维护了请求路径和请求方式
+
+工具类：
+ControllerHelper
+
+
 关键之处在于把Mvc的Service Controller 得到的Bean_Map 调用 Bean的启动类
+
+定义统一的DispatchServlet 来完成统一的转发操作
 
 ### 4.Data模块
 ### 5.AOP模块

@@ -1,6 +1,6 @@
 package work.lishubin.smart4j.framework.webtest.aspect;
 
-import work.lishubin.smart4j.framework.bean.annotation.Controller;
+import work.lishubin.smart4j.framework.webmvc.annotation.Controller;
 import work.lishubin.srmart4j.framework.aop.annotation.Aspect;
 import work.lishubin.srmart4j.framework.aop.aspect.AbstractAspectProxy;
 
