@@ -5,8 +5,8 @@ import work.lishubin.smart4j.framework.bean.helper.ConfigHelper;
 import work.lishubin.smart4j.framework.utils.*;
 import work.lishubin.smart4j.framework.webmvc.entity.*;
 import work.lishubin.smart4j.framework.webmvc.helper.ControllerHelper;
+import work.lishubin.smart4j.framework.webmvc.helper.MvcBeanLoaderHelper;
 import work.lishubin.smart4j.framework.webmvc.helper.ServletHelper;
-import work.lishubin.srmart4j.framework.aop.helper.HelpLoaderWithAop;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -25,6 +25,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
+ * 统一的入口转发器
+ *
  * @author 李树彬
  * @date 2019/8/31  22:30
  */
@@ -36,8 +38,11 @@ public class ServletDispatcher extends HttpServlet {
     public void init(ServletConfig config) {
 
 
-        // 初始化所有的辅助类
-        HelpLoaderWithAop.init();
+        // 初始化MvcBeanLoaderHelper
+        // 完成对应的依赖注入
+        // todo 去除AOP
+        MvcBeanLoaderHelper.init();
+
 
         // 获得整个Servlet的环境
         ServletContext servletContext = config.getServletContext();
@@ -75,17 +80,13 @@ public class ServletDispatcher extends HttpServlet {
 
 
             // 获取请求的信息
-
             String urlMethod = request.getMethod().toLowerCase();
-            HttpMethod requestMethod = null;
-            //todo 用策略模式
-            if (urlMethod.equals("get")) {
-                requestMethod = HttpMethod.GET;
-            }
+            HttpMethod requestMethod = getHttpMethod(urlMethod);
 
 
             String requestUrl = request.getPathInfo();
 
+            //得到对应的处理器对象
             SmartHandler smartHandler = ControllerHelper.getSmartHandler(requestMethod, requestUrl);
 
             // 查到存在对应的Handler
@@ -112,8 +113,7 @@ public class ServletDispatcher extends HttpServlet {
                     param.addAttribute(attributeName, attributeValue);
                 }
 
-                // 遍历请求体中的参数封装
-
+                // 遍历请求url中的参数封装
                 String body = CodecUtils.decode(StreamUtils.getString(request.getInputStream()));
 
                 if (StringUtils.isNotEmpty(body)) {
@@ -135,7 +135,7 @@ public class ServletDispatcher extends HttpServlet {
                 }
 
 
-                // 调用对应的方法
+                // 调用对应的方法得到方法的返回结果
                 Object methodResult = ReflectionUtils.invokeMethod(controllerBean, controllerMethod, param);
 
 
@@ -145,12 +145,16 @@ public class ServletDispatcher extends HttpServlet {
                     String viewPath = view.getViewPath();
 
                     // viewPath 有两种
-                    // - 转发
-                    // - 重定向
+                    // - 转发 home
+                    // - 重定向 redirect: home
                     String[] viewPathWithMethod = viewPath.split(":");
                     // 转发情况
                     // 长度为1 则是转发请求
                     if (viewPathWithMethod.length == 1) {
+
+                        // 清除左右的 空格
+                        viewPath = viewPath.trim();
+                        // 页面Model传递
                         // 放入model进入request
                         Map<String, Object> viewModel = view.getModel();
                         for (String key : viewModel.keySet()) {
@@ -164,7 +168,9 @@ public class ServletDispatcher extends HttpServlet {
                     // 长度为2 重定向
                     else {
                         // 重定向的相关设置
-                        response.sendRedirect(String.format("%s%s", request.getContextPath(), viewPath));
+                        String redirectPath = viewPathWithMethod[1];
+                        redirectPath = redirectPath.trim();
+                        response.sendRedirect(String.format("%s%s", request.getContextPath(), redirectPath));
                     }
                 }
                 // 如果返回结果是数据
@@ -172,7 +178,6 @@ public class ServletDispatcher extends HttpServlet {
                     Data data = (Data) methodResult;
                     // 获取封装的数据模型
                     Map<String, Object> model = data.getModel();
-
                     String parseString = JsonUtils.parseString(model);
 
                     // 设置response的输出
@@ -188,14 +193,16 @@ public class ServletDispatcher extends HttpServlet {
 
             // 返回404页面
             else {
+                //设置返回页面的方式
                 response.setContentType("text/html");
+                //设置编码
                 response.setCharacterEncoding("UTF-8");
 
 
                 PrintWriter writer = response.getWriter();
                 String contextHtml = CodecUtils.decode(StreamUtils.getString(
                         Thread.currentThread().getContextClassLoader()
-                                .getResourceAsStream("404.html")));
+                                .getResourceAsStream("error.html")));
                 writer.write(contextHtml);
                 writer.flush();
                 writer.close();
@@ -204,6 +211,27 @@ public class ServletDispatcher extends HttpServlet {
         } finally {
             ServletHelper.destroy();
         }
+    }
+
+    /**
+     * 将对应request得到的method字符串转化为对应的枚举对象
+     *
+     * @param urlMethod
+     * @return
+     */
+    private HttpMethod getHttpMethod(String urlMethod) {
+
+        HttpMethod method = null;
+        if (urlMethod.toLowerCase().equals("get")) {
+            method = HttpMethod.GET;
+        }
+        if (urlMethod.toLowerCase().equals("post")) {
+            method = HttpMethod.POST;
+        }
+
+        return method;
+
+
     }
 
 }

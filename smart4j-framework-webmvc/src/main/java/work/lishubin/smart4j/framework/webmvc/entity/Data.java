@@ -1,9 +1,10 @@
 package work.lishubin.smart4j.framework.webmvc.entity;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 封装了数据模型给前端
+ *
  * @author 李树彬
  * @date 2019/8/31  22:29
  */

@@ -39,13 +39,17 @@ public class ReflectionUtils {
 
         try {
             Parameter[] parameters = method.getParameters();
+            //判断是否是无参方法
             if (parameters!=null && parameters.length!= 0){
                 for (Parameter parameter : parameters) {
+                    //执行对应的可变参数方法
                     if ("params".equals(parameter.getName())){
+                        //执行对应参数的方法
                         result = method.invoke(target, params);
                     }
                 }
             }
+            // 执行无参方法
             result = method.invoke(target);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();

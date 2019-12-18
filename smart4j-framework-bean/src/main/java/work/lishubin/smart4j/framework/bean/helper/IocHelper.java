@@ -19,6 +19,7 @@ public class IocHelper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IocHelper.class);
 
+
     static {
 
 
@@ -27,6 +28,11 @@ public class IocHelper {
         //扫描包下的所有类
         Set<Class<?>> classSet = BeanClassHelper.getClassSet();
 
+        injectByClassSet(classSet, beanMap);
+
+    }
+
+    public static void injectByClassSet(Set<Class<?>> classSet, Map<Class<?>, Object> beanMap) {
         for (Class<?> cls : classSet) {
 
             // 取得对应类的实体
@@ -45,24 +51,17 @@ public class IocHelper {
                     // 查看是否已经有对应的对象
                     Class<?> fieldClass = declaredField.getClass();
 
-
                     //2.1 根据类名注入
                     if (beanMap.containsKey(fieldClass)) {
-
                         // 取得对应的bean,并将bean通过反射注入到属性中
                         Object fieldInstance = beanMap.get(declaredField.getClass());
                         ReflectionUtils.setField(classInstance, declaredField, fieldInstance);
-                    }
-                    //根据实现类注入 留给MVC自己实现
-                    else {
-
                     }
                 }
 
             }
 
         }
-
     }
 
 }

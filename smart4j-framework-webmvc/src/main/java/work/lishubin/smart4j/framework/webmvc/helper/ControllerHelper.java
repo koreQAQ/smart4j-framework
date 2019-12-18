@@ -44,8 +44,6 @@ public class ControllerHelper {
                     String requestUrl = actionAnnotation.path();
                     HttpMethod requestMethod = actionAnnotation.httpMethod();
 
-                    //todo 将Action注解属性封装到Request对象中
-
 
                     //封装为一个Request对象
                     SmartRequest smartRequest = SmartRequest.getNewInstance();
