@@ -18,7 +18,6 @@ import java.util.jar.JarEntry;
 @Slf4j
 public class ClassUtils {
 
-    //todo
 
     private static ClassLoader getClassLoader(){
         return Thread.currentThread().getContextClassLoader();
