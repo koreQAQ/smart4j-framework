@@ -1,6 +1,5 @@
 package work.lishubin.srmart4j.framework.aop.helper;
 
-import work.lishubin.smart4j.framework.bean.annotation.Bean;
 import work.lishubin.smart4j.framework.helper.AbstractClassHelper;
 
 import java.lang.annotation.Annotation;
@@ -15,12 +14,6 @@ import java.util.Set;
 public class AopClassHelper extends AbstractClassHelper {
 
 
-    public static Set<Class<?>> getServiceClass() {
-
-        //todo 替换为Service.Class
-        return getClassSetWithAnnotation(Bean.class);
-
-    }
 
 
     public static Set<Class<?>> getClassSetWithAnnotation(Class<? extends Annotation> annotation) {
