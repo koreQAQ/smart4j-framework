@@ -1,4 +1,4 @@
-package work.lishubin.srmart4j.framework.aop.proxy;
+package work.lishubin.smart4j.framework.aop.proxy;
 
 import net.sf.cglib.proxy.MethodProxy;
 
@@ -44,6 +44,7 @@ public class ProxyChain {
 
     /**
      * 依次调用在ProxyList中的Proxy对象的方法，如果proxyList遍历完成之后，则再次调用其本身的方法
+     * 这里使用的是Proxy回调ProxyChain，所以不需要循环调用，而是链式调用
      *
      * @param <T> 方法返回值
      * @return 方法返回值
@@ -52,6 +53,7 @@ public class ProxyChain {
     public <T> T doProxyChain() throws Throwable {
 
         Object methodResult;
+
 
         // 如果proxyList中还有Proxy对象
         if (proxyListIndex < proxyList.size()) {

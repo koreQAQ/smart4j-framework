@@ -40,7 +40,6 @@ public class ServletDispatcher extends HttpServlet {
 
         // 初始化MvcBeanLoaderHelper
         // 完成对应的依赖注入
-        // todo 去除AOP
         MvcBeanLoaderHelper.init();
 
 

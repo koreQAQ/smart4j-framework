@@ -15,7 +15,20 @@ AOP 即面向切面编程，即在不改变既有代码的基础上动态地增�
 类对象
 
 ### 1.2 实现思路
- 
+主要实现思路：
+1. 定义@Aspect 注解 ；用于标记这个Aspect切入了带有哪些注解的类（切点）
+2. Proxy接口， 定义了doProxy方法 。doProxy传入一个ProxyChain对象
+3. 定义了ProxyChain代理链对象，代理链对象维护了 多个Proxy代理的**目标类对象**
+且提供了doProxyChain，依次从ProxyList中取出proxy对象执行，同时Proxy执行完毕之后会回调ProxyChain的doProxyChain方法，
+所以这里不需要采用循环的方式。
+当proxyList全部执行完成之后（proxyListIndex大于proxyList的size），则再去执行目标类的方法。
+4. AbstractAspect 实现了Proxy 并且使用了模板设计模式，提供了对应代理方法执行的算法骨架
+5. ProxyManager负责 创建对应的代理对象。通过Enhancer(CGLib)的create方法来创建代理类。
+6. AopHelper
+	- 获取所有带有@Aspect并继承了AbstractAspect类的XxxAspect类，以及这个类的@Aspect注解所切入的@Xxx注解类的集合
+		Map<Class<?> aspect,Set<Class<?>> classSet> aspectMap 这个映射关系
+	- 将对应的ClassSet遍历，为被代理的类提供一组List<Proxy> （通过ProxyManager创建代理对象）
+	- 将上述关系放入BeanMap 
 
 ## 2. 编码实现
 ### 2.1 切面类注解

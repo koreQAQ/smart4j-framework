@@ -1,9 +1,9 @@
-package work.lishubin.srmart4j.framework.aop.aspect;
+package work.lishubin.smart4j.framework.aop.aspect;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import work.lishubin.srmart4j.framework.aop.proxy.Proxy;
-import work.lishubin.srmart4j.framework.aop.proxy.ProxyChain;
+import work.lishubin.smart4j.framework.aop.proxy.Proxy;
+import work.lishubin.smart4j.framework.aop.proxy.ProxyChain;
 
 import java.lang.reflect.Method;
 
@@ -24,34 +24,38 @@ public abstract class AbstractAspectProxy implements Proxy {
     private Object errorResult = null;
     private Object endResult = null;
 
+
+    /**
+     * 执行代理方法
+     *
+     * @param proxyChain 代理链
+     * @return
+     */
     @Override
     public Object doProxy(ProxyChain proxyChain) {
 
 
-        Class targetClass = proxyChain.getTargetClass();
+        Class<?> targetClass = proxyChain.getTargetClass();
         Method targetMethod = proxyChain.getTargetMethod();
         Object[] methodArgs = proxyChain.getMethodArgs();
 
         beginResult = begin(targetClass, targetMethod, methodArgs);
-        try{
-            if (intercept(targetClass,targetMethod,methodArgs)){
+        try {
+            if (intercept(targetClass, targetMethod, methodArgs)) {
 
-                startResult = start(targetClass,targetMethod,methodArgs);
+                startResult = start(targetClass, targetMethod, methodArgs);
                 methodResult = proxyChain.doProxyChain();
-                afterResult = after(targetClass,targetMethod,methodArgs);
-            }
-            else {
+                afterResult = after(targetClass, targetMethod, methodArgs);
+            } else {
                 methodResult = proxyChain.doProxyChain();
             }
 
-        }
-        catch (Throwable e){
+        } catch (Throwable e) {
 
-            LOGGER.error("aspect meet some error",e);
-            errorResult = error(targetClass,targetMethod,methodArgs,e);
+            LOGGER.error("aspect meet some error", e);
+            errorResult = error(targetClass, targetMethod, methodArgs, e);
 
-        }
-        finally {
+        } finally {
             endResult = end(targetClass, targetMethod, methodArgs);
         }
 
@@ -63,20 +67,20 @@ public abstract class AbstractAspectProxy implements Proxy {
     // 定义钩子函数
 
 
-    protected boolean intercept(Class targetClass, Method targetMethod, Object[] methodArgs) {
+    protected boolean intercept(Class<?> targetClass, Method targetMethod, Object[] methodArgs) {
         return true;
     }
 
-    protected <T> T start(Class targetClass, Method targetMethod, Object[] methodArgs) {
+    protected <T> T start(Class<?> targetClass, Method targetMethod, Object[] methodArgs) {
         return null;
     }
 
 
-    protected <T> T after(Class targetClass, Method targetMethod, Object[] methodArgs) {
+    protected <T> T after(Class<?> targetClass, Method targetMethod, Object[] methodArgs) {
         return null;
     }
 
-    private <T> T error(Class targetClass, Method targetMethod, Object[] methodArgs, Throwable e) {
+    private <T> T error(Class<?> targetClass, Method targetMethod, Object[] methodArgs, Throwable e) {
         return null;
     }
 

@@ -1,4 +1,4 @@
-package work.lishubin.srmart4j.framework.aop.proxy;
+package work.lishubin.smart4j.framework.aop.proxy;
 
 /**
  * @author lishubin

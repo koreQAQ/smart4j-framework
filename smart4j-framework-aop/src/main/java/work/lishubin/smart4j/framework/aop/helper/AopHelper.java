@@ -1,11 +1,10 @@
-package work.lishubin.srmart4j.framework.aop.helper;
+package work.lishubin.smart4j.framework.aop.helper;
 
+import work.lishubin.smart4j.framework.aop.annotation.Aspect;
+import work.lishubin.smart4j.framework.aop.aspect.AbstractAspectProxy;
+import work.lishubin.smart4j.framework.aop.proxy.Proxy;
+import work.lishubin.smart4j.framework.aop.proxy.ProxyManager;
 import work.lishubin.smart4j.framework.bean.helper.BeanHelper;
-import work.lishubin.srmart4j.framework.aop.annotation.Aspect;
-import work.lishubin.srmart4j.framework.aop.aspect.AbstractAspectProxy;
-import work.lishubin.srmart4j.framework.aop.aspect.TransactionAspect;
-import work.lishubin.srmart4j.framework.aop.proxy.Proxy;
-import work.lishubin.srmart4j.framework.aop.proxy.ProxyManager;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -26,31 +25,37 @@ public class AopHelper {
             Class<?> proxiedClass = targetEntry.getKey();
             List<Proxy> proxyList = targetEntry.getValue();
             Object proxyWithAspect = ProxyManager.getProxyWithAspect(proxiedClass, proxyList);
-
             // 放入代理对象到容器中
-            BeanHelper.putBean(proxiedClass,proxyWithAspect);
+            BeanHelper.putBean(proxiedClass, proxyWithAspect);
 
         }
 
 
     }
 
-    private static Integer MAX_SIZE = 256;
+    /**
+     * 用于触发static 静态代码块
+     */
+    public static void init() {
+
+    }
+
 
     /**
-     *  根据@Aspect注解中指明的切入点类注解，调用ClassHelper#getClassSetWithAnnotation
-     *  获取被切入代理类的集合
+     * 根据@Aspect注解中指明的切入点类注解，调用ClassHelper#getClassSetWithAnnotation
+     * 获取被切入代理类的集合
+     *
      * @param aspect 横切代理的Aspect注解
      * @return 被切入代理类的集合
      */
-    private static Set<Class<?>> getTargetClass(Aspect aspect){
+    private static Set<Class<?>> getTargetClass(Aspect aspect) {
 
         Set<Class<?>> targetClassSet = new HashSet<>();
 
         // 1. 得到Aspect中的切点注解
         Class<? extends Annotation> cutPointAnnotation = aspect.value();
 
-        // 2. 得到有切点注解的类集合
+        // 2. 得到对应切点注解的类集合
         Set<Class<?>> classSetWithAnnotation = AopClassHelper.getClassSetWithAnnotation(cutPointAnnotation);
 
         // 3. 遍历含有切点注解的类集合
@@ -72,13 +77,12 @@ public class AopHelper {
      */
     private static Map<Class<?>,Set<Class<?>>> createProxyMap(){
 
-        Map<Class<?>, Set<Class<?>>> proxyMap = new HashMap<>(MAX_SIZE);
+        Map<Class<?>, Set<Class<?>>> proxyMap = new HashMap<>();
 
 
         // 1.找到所有扩展了AspectProxy且带有@Aspect注解的类
 
         addAspectMap(proxyMap);
-        addTransactionMap(proxyMap);
         return proxyMap;
     }
 
@@ -97,22 +101,16 @@ public class AopHelper {
         }
     }
 
-    private static Map<Class<?>, Set<Class<?>>> addTransactionMap(Map<Class<?>, Set<Class<?>>> proxyMap) {
-        Map<Class<?>, Set<Class<?>>> transactionMap = new HashMap<>(MAX_SIZE);
-        Set<Class<?>> serviceClass = AopClassHelper.getServiceClass();
-        transactionMap.put(TransactionAspect.class, serviceClass);
-        return transactionMap;
-
-    }
 
     /**
-     * 是为了得到 每一个被横切代理的类与横切他们的代理类集合 之间的映射关系
+     * 是为了得到 每一个被横切代理的类与横切他们的代理类对象List 之间的映射关系
+     *
      * @param proxyMap 横切代理类与被这个横切代理类横切的类集合
      * @return 被横切代理的类 与 横切这些类的集合 之间的映射关系
      */
     private static Map<Class<?>, List<Proxy>> getTargetMap(Map<Class<?>, Set<Class<?>>> proxyMap){
 
-        Map<Class<?>, List<Proxy>> targetMap = new HashMap<>(MAX_SIZE);
+        Map<Class<?>, List<Proxy>> targetMap = new HashMap<>();
         try{
             for (Class<?> proxyClass : proxyMap.keySet()) {
 

@@ -46,12 +46,14 @@ public class BeanHelper {
 
     /**
      * 放入一组 类和对象之间的映射关系 为了方便AOP模块
+     * 把原先的对象（不是代理对象）去除
      *
      * @param cls  类
      * @param bean 对象bean
      */
-    public static void putBean(Class<?> cls,Object bean){
-        BEAN_MAP.put(cls,bean);
+    public static void putBean(Class<?> cls, Object bean) {
+        BEAN_MAP.remove(cls);
+        BEAN_MAP.put(cls, bean);
     }
 
 

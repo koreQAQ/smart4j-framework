@@ -1,4 +1,4 @@
-package work.lishubin.srmart4j.framework.aop.annotation;
+package work.lishubin.smart4j.framework.aop.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

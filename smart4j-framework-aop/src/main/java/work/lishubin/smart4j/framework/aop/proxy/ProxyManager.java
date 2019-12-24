@@ -1,12 +1,9 @@
-package work.lishubin.srmart4j.framework.aop.proxy;
+package work.lishubin.smart4j.framework.aop.proxy;
 
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
 
-import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 生产我们需要的切入代理类的实体对象，且该实体对象有个方法
