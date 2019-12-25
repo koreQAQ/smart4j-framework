@@ -1,5 +1,13 @@
 *.iml
 target
 .idea/*
-test/
+
+
+smart4j-framework-bean-test/src/test/
+smart4j-framework-bean/src/test/
+smart4j-framework-webtest/src/test/
+smart4j-framework-aop/src/test/
+smart4j-framework-commons/src/test/
+smart4j-framework-utils/src/test/
+smart4j-framework-webmvc/src/test/
 smart4j-framework-bean-test/src/main/resources/

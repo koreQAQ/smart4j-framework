@@ -5,10 +5,8 @@ import org.slf4j.LoggerFactory;
 import work.lishubin.smart4j.framework.aop.annotation.Transactional;
 import work.lishubin.smart4j.framework.aop.proxy.Proxy;
 import work.lishubin.smart4j.framework.aop.proxy.ProxyChain;
-import work.lishubin.smart4j.framework.utils.DataBaseUtils;
 
 import java.lang.reflect.Method;
-import java.sql.SQLException;
 
 /**
  * @author lishubin
@@ -27,17 +25,20 @@ public class TransactionAspect implements Proxy {
         Method targetMethod = proxyChain.getTargetMethod();
         // 判断是否存在@Transaction注解
         if (targetMethod.isAnnotationPresent(Transactional.class)) {
-
-            try {
-                DataBaseUtils.beginTransaction();
-                result = proxyChain.doProxyChain();
-                DataBaseUtils.closeConnection();
-            } catch (SQLException e) {
-                DataBaseUtils.rollbackTransaction();
-                LOGGER.error("doProxy failure for SQLException", e);
-            }
+            //todo 事务管理
+            /**
+             try {
+             DataBaseUtils.beginTransaction();
+             result = proxyChain.doProxyChain();
+             DataBaseUtils.closeConnection();
+             } catch (SQLException e) {
+             DataBaseUtils.rollbackTransaction();
+             LOGGER.error("doProxy failure for SQLException", e);
+             }
+             **/
         }
 
         return result;
     }
+
 }

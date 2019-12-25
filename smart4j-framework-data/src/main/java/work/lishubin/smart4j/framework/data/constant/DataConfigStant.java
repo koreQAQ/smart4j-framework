@@ -1,4 +1,6 @@
-package work.lishubin.smart4j.framework.constant;
+package work.lishubin.smart4j.framework.data.constant;
+
+import work.lishubin.smart4j.framework.constant.ConfigConstant;
 
 /**
  * @author 李树彬

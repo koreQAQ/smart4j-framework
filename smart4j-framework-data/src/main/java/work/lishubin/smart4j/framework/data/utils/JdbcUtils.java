@@ -1,9 +1,10 @@
-package work.lishubin.smart4j.framework.utils;
+package work.lishubin.smart4j.framework.data.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import work.lishubin.smart4j.framework.commons.MyThreadLocal;
-import work.lishubin.smart4j.framework.constant.DataConfigStant;
+import work.lishubin.smart4j.framework.data.constant.DataConfigStant;
+import work.lishubin.smart4j.framework.utils.PropUtils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,7 +14,7 @@ import java.util.Properties;
 /**
  * @author lishubin
  */
-public class DataBaseUtils {
+public class JdbcUtils {
 
 
     //加载数据库的相关信息
@@ -35,7 +36,7 @@ public class DataBaseUtils {
 
     private static final MyThreadLocal<Connection> CONNECTION_CONTAINER = new MyThreadLocal<>();
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DataBaseUtils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcUtils.class);
 
 
     public static Connection getConnection() {

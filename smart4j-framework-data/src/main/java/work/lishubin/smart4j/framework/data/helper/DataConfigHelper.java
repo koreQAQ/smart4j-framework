@@ -1,6 +1,7 @@
-package work.lishubin.smart4j.framework.helper;
+package work.lishubin.smart4j.framework.data.helper;
 
-import work.lishubin.smart4j.framework.constant.DataConfigStant;
+import work.lishubin.smart4j.framework.data.constant.DataConfigStant;
+import work.lishubin.smart4j.framework.helper.AbstractConfigHelper;
 import work.lishubin.smart4j.framework.utils.PropUtils;
 
 /**

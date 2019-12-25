@@ -12,5 +12,27 @@
 
     <artifactId>smart4j-framework-data</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>work.lishubin</groupId>
+            <artifactId>smart4j-framework-utils</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <!-- DataSource -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.47</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
 
 </project>
